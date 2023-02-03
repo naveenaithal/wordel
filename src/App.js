@@ -1,4 +1,5 @@
 import React,{useEffect,useState} from 'react'
+import { CHANGE_MASTER_PASSWORD, GET_URL, POST_URL } from './credential';
 import './App.css';
 import {wordsArray} from './data'
 import './index.css'
@@ -22,90 +23,13 @@ const [solution,setSolution]=useState('')
 
 
 
-  useEffect(() => {
-    
-
-    // const asyncData = async () => {
-    //   const data = await fetch("https://ng-project-2aa46-default-rtdb.firebaseio.com/getMaster.json")
-    //   const parsedData = await data.json()
-    //   console.log(parsedData) 
-    //   setMasterPasswrod(parsedData.password)
-     
-    // }
-    // asyncData()
-    // fetch("https://ng-project-2aa46-default-rtdb.firebaseio.com/getMaster.json").then((data) => data.json()).then((final) => {
-    //   setMasterPasswrod(final.password)
-    //   console.log(final.password)
-    
-    
-
-
-  },[])
-
-//   useEffect(() => {
-//     const handleType = (event) => {
-//       if (gameOver) {
-//         return
-//       }
-//           if (currentGuess.length > 5) {
-//   setCurrentGuess(currentGuess.slice(0,5))
-//           }
-      
-      
-      
-//       if (event.key === "Enter") {
-//         if (currentGuess.length !== 5) {
-//           return;
-//         }
-
-// const newGuesses=[... guesses];
-// newGuesses[guesses.findIndex(val=>val == null)]=currentGuess;
-//         setGuesses(newGuesses);
-     
-//     setCurrentGuess('');
-
-//                if (currentGuess===solution) {
-//                  setGameOver(true)
-//                  setTimeout(() => {
-//     window.location.reload(false);
-                   
-//                    alert("Congratulationsss brother....")
-//                  },1000)
-//         }
-                                          
-
-//         if (currentGuess.length >= 5) {
-//           return;
-//         }
-      
  
-    
-
-       
-//       }
-//        if (event.key == 'Backspace') {
-//           setCurrentGuess(currentGuess.slice(0, -1))
-//           return;
-//         }
-  
-//      setCurrentGuess(oldGuess=>oldGuess+event.key)
-//     }  
-    
-//     window.addEventListener('keydown', handleType);
-//     return ()=> window.removeEventListener('keydown',handleType)
-
-
-// },[currentGuess,gameOver,solution])
-
-  
-  
 
   useEffect(() => {
 
     const asyncData = async () => {
-      const data = await fetch("https://ng-project-2aa46-default-rtdb.firebaseio.com/getMaster.json")
+      const data = await fetch(GET_URL)
       const parsedData = await data.json()
-      console.log(parsedData) 
       setMasterPasswrod(parsedData.password)
      
     }
@@ -121,7 +45,7 @@ const [solution,setSolution]=useState('')
   
   if (guesses.every(val => val !== null) && !gameOver) {
     setTimeout(() => {
-      alert("Katam Gaya!...tata bye bye ")
+      alert("Game over. try again!")
       window.location.reload(false);
   
 },500)}
@@ -140,16 +64,15 @@ newGuesses[guesses.findIndex(val=>val == null)]=text;
                  setTimeout(() => {
     window.location.reload(false);
                    
-                   alert("Congratulationsss brother....")
+                   alert("Congratulations You Guessed right Word.....")
                  },1000)
     }
   }
   
 
-    console.log(masterPasswrod)
+
     const masterUser = (e) => {
       const password = e.target.value
-      console.log(password)
     if (password.length === 6) {
       if (password === masterPasswrod) {
         setIsMaster(true)
@@ -162,7 +85,7 @@ newGuesses[guesses.findIndex(val=>val == null)]=text;
         setIsChangePass(true)
 
     }
-       if (password === "529160") {
+       if (password === CHANGE_MASTER_PASSWORD) {
         setIsChangePass(true)
     
        }
@@ -172,7 +95,7 @@ newGuesses[guesses.findIndex(val=>val == null)]=text;
   }
   const changPassword = (e) => {
     e.preventDefault()
-  fetch('https://ng-project-2aa46-default-rtdb.firebaseio.com/getMaster.json', {
+  fetch(POST_URL, {
   method: 'PUT',
   headers: {
     'Accept': 'application/json',
